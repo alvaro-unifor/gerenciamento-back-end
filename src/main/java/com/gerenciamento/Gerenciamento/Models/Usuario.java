@@ -7,6 +7,20 @@ import java.util.List;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+
+    public Usuario() {
+    }
+
+    public Usuario(Long id, String nome, String userName, String email, String senha, List<Receita> receitas, List<Despesa> despesas) {
+        this.id = id;
+        this.nome = nome;
+        this.userName = userName;
+        this.email = email;
+        this.senha = senha;
+        this.receitas = receitas;
+        this.despesas = despesas;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +41,7 @@ public class Usuario {
     private List<Receita> receitas;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Expense> expenses;
+    private List<Despesa> despesas;
 
     public Long getId() {
         return id;
@@ -77,11 +91,11 @@ public class Usuario {
         this.receitas = receitas;
     }
 
-    public List<Expense> getExpenses() {
-        return expenses;
+    public List<Despesa> getExpenses() {
+        return despesas;
     }
 
-    public void setExpenses(List<Expense> expenses) {
-        this.expenses = expenses;
+    public void setExpenses(List<Despesa> despesas) {
+        this.despesas = despesas;
     }
 }
