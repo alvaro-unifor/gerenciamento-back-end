@@ -1,25 +1,27 @@
 package com.gerenciamento.Gerenciamento.Controller;
 
+import com.gerenciamento.Gerenciamento.Dto.CategoriaDTO;
+import com.gerenciamento.Gerenciamento.Dto.DespesaDTO;
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
+import com.gerenciamento.Gerenciamento.Models.Despesa;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
+import com.gerenciamento.Gerenciamento.Outputs.CategoriaOutput;
+import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Service.CategoriaService;
+import com.gerenciamento.Gerenciamento.Service.DespesaService;
 import com.gerenciamento.Gerenciamento.Service.ReceitaService;
 import com.gerenciamento.Gerenciamento.Service.UsuarioService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 @RestController
-public class ReceitaController {
-
+public class DespesaController {
     @Autowired
     private UsuarioService usuarioService;
 
@@ -27,39 +29,39 @@ public class ReceitaController {
     private CategoriaService categoriaService;
 
     @Autowired
-    private ReceitaService receitaService;
+    private DespesaService despesaService;
 
 
-    @PostMapping("/criar-receita")
-    public ResponseEntity<ReceitaOutput> criarReceita(@Valid @RequestBody ReceitaDTO request) {
+    @PostMapping("/criar-despesa")
+    public ResponseEntity<DespesaOutput> criarDespesa(@RequestBody DespesaDTO request) {
 
         Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
 
-        Receita receita = new Receita(request, usuario, categoria);
+        Despesa despesa = new Despesa(request, usuario, categoria);
 
-        ReceitaOutput response = receitaService.cadastrarReceita(receita);
+        DespesaOutput response = despesaService.cadastrarReceita(despesa);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/atualizar-receita/{id}")
-    public ResponseEntity<ReceitaOutput> atualizarReceitaPorId(@PathVariable Long id, @Valid @RequestBody ReceitaDTO request) {
+    @PutMapping("/atualizar-despesa/{id}")
+    public ResponseEntity<DespesaOutput> atualizarDespesaPorId(@PathVariable Long id, @RequestBody DespesaDTO request) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
-        Receita receita = new Receita(request, categoria);
+        Despesa despesa = new Despesa(request, categoria);
 
-        ReceitaOutput response = receitaService.atualizarReceita(receita, id);
+        DespesaOutput response = despesaService.atualizarDespesa(despesa, id);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/listar-receitas")
-    public ResponseEntity<List<ReceitaOutput>> listarReceitas() {
-        List<ReceitaOutput> response = receitaService.listarReceitas();
+    @GetMapping("/listar-despesas")
+    public ResponseEntity<List<DespesaOutput>> listarReceitas() {
+        List<DespesaOutput> response = despesaService.listarReceitas();
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/deletar-receita/{id}")
+    @DeleteMapping("/deletar-despesa/{id}")
     public ResponseEntity<MessageOutput> deletarReceitaPorId(@PathVariable Long id) {
-        MessageOutput response = receitaService.deletarReceita(id);
+        MessageOutput response = despesaService.deletarReceita(id);
         return ResponseEntity.ok(response);
     }
 }

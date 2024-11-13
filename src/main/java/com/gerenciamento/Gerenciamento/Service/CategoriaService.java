@@ -1,9 +1,11 @@
 package com.gerenciamento.Gerenciamento.Service;
 
+import com.gerenciamento.Gerenciamento.Dto.CategoriaDTO;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
 import com.gerenciamento.Gerenciamento.Outputs.CategoriaOutput;
+import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.CategoriaRepository;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
@@ -26,6 +28,20 @@ public class CategoriaService {
         return new CategoriaOutput(repository.save(input));
     }
 
+    public CategoriaOutput atualizarCategoria(CategoriaDTO request, Long id) {
+        Categoria categoria = buscarCategoriaPorId(id);
+
+        categoria.setNome(request.getNome());
+        categoria.setTipo(request.getTipo());
+        return new CategoriaOutput(repository.save(categoria));
+    }
+
+    public MessageOutput deletarCategoria(Long id) {
+        Categoria categoria = buscarCategoriaPorId(id);
+        repository.delete(categoria);
+        return new MessageOutput("Categoria excluída com sucesso");
+    }
+
     public List<CategoriaOutput> listarCategorias() {
         List<Categoria> categorias = repository.findAll();
         List<CategoriaOutput> lista = new ArrayList<>();
@@ -34,6 +50,7 @@ public class CategoriaService {
         }
         return lista;
     }
+
 
     public Categoria buscarCategoriaPorId(Long id) {
         return repository.findById(id).
