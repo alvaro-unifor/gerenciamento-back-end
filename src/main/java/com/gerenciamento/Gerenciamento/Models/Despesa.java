@@ -1,18 +1,17 @@
 package com.gerenciamento.Gerenciamento.Models;
 
-import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "receita")
-public class Receita {
+@Table(name = "despesa")
+public class Despesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long expenseId;
 
     @ManyToOne
     @JoinColumn(name = "idusuario", nullable = false)
@@ -25,39 +24,21 @@ public class Receita {
     @Column(nullable = false)
     private BigDecimal valor;
 
+    @Column(nullable = false)
     private String descricao;
 
     @Column(nullable = false)
     private LocalDate data;
 
-    public Receita() {
+    public Long getExpenseId() {
+        return expenseId;
     }
 
-    public Receita(ReceitaDTO dto, Usuario usuario, Categoria categoria) {
-        this.usuario = usuario;
-        this.categoria = categoria;
-        this.valor = dto.getValor();
-        this.descricao = dto.getDescricao();
-        this.data = dto.getData();
+    public void setExpenseId(Long expenseId) {
+        this.expenseId = expenseId;
     }
 
-    public Receita(ReceitaDTO dto, Categoria categoria) {
-        this.categoria = categoria;
-        this.valor = dto.getValor();
-        this.descricao = dto.getDescricao();
-        this.data = dto.getData();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
+    public Usuario getUsuarior() {
         return usuario;
     }
 
@@ -96,4 +77,6 @@ public class Receita {
     public void setData(LocalDate data) {
         this.data = data;
     }
+
+    // Getters e setters
 }
