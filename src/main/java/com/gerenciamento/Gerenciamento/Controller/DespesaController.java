@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 public class DespesaController {
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Autowired
     private CategoriaService categoriaService;
@@ -35,10 +33,9 @@ public class DespesaController {
     @PostMapping("/criar-despesa")
     public ResponseEntity<DespesaOutput> criarDespesa(@RequestBody DespesaDTO request) {
 
-        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
 
-        Despesa despesa = new Despesa(request, usuario, categoria);
+        Despesa despesa = new Despesa(request, categoria);
 
         DespesaOutput response = despesaService.cadastrarReceita(despesa);
         return ResponseEntity.ok(response);

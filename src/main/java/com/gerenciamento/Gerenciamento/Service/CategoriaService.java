@@ -9,6 +9,7 @@ import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.CategoriaRepository;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +19,8 @@ import java.util.Optional;
 @Service
 public class CategoriaService {
 
+    @Autowired
     CategoriaRepository repository;
-
-    public CategoriaService(CategoriaRepository repository) {
-        this.repository = repository;
-    }
 
     public CategoriaOutput cadastrarCategoria(Categoria input) {
         return new CategoriaOutput(repository.save(input));

@@ -7,6 +7,7 @@ import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.DespesaRepository;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +15,8 @@ import java.util.List;
 
 @Service
 public class DespesaService {
+    @Autowired
     DespesaRepository repository;
-
-    public DespesaService(DespesaRepository repository) {
-        this.repository = repository;
-    }
 
     public DespesaOutput cadastrarReceita(Despesa input) {
         return new DespesaOutput(repository.save(input));
