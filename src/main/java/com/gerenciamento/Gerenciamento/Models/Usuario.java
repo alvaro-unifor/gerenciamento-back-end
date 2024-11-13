@@ -1,5 +1,6 @@
 package com.gerenciamento.Gerenciamento.Models;
 
+import com.gerenciamento.Gerenciamento.Dto.UsuarioDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -7,20 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
-
-    public Usuario() {
-    }
-
-    public Usuario(Long id, String nome, String userName, String email, String senha, List<Receita> receitas, List<Despesa> despesas) {
-        this.id = id;
-        this.nome = nome;
-        this.userName = userName;
-        this.email = email;
-        this.senha = senha;
-        this.receitas = receitas;
-        this.despesas = despesas;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,6 +29,16 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<Despesa> despesas;
+
+    public Usuario() {
+    }
+
+    public Usuario(UsuarioDTO dto) {
+        this.nome = dto.getNome();
+        this.userName = dto.getUserName();
+        this.email = dto.getEmail();
+        this.senha = dto.getSenha();
+    }
 
     public Long getId() {
         return id;

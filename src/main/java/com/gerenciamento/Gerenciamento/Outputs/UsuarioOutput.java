@@ -7,18 +7,15 @@ import java.util.Optional;
 public class UsuarioOutput {
     private Long id;
     private String nome;
+
+    private String email;
     private String senha;
 
     public UsuarioOutput(Usuario usuario) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.senha = usuario.getSenha();
-    }
-
-    public UsuarioOutput(Optional<Usuario> usuario) {
-        this.id = usuario.get().getId();
-        this.nome = usuario.get().getNome();
-        this.senha = usuario.get().getSenha();
+        this.email = usuario.getEmail();
     }
 
     public Long getId() {
@@ -43,5 +40,13 @@ public class UsuarioOutput {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

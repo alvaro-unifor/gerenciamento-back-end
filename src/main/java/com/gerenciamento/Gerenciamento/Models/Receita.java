@@ -2,6 +2,8 @@ package com.gerenciamento.Gerenciamento.Models;
 
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,14 +22,18 @@ public class Receita {
 
     @ManyToOne
     @JoinColumn(name = "idcategoria", nullable = false)
+    @NotNull(message = "O campo categoria é obrigatório")
     private Categoria categoria;
 
     @Column(nullable = false)
+    @NotNull(message = "O campo valor é obrigatório")
     private BigDecimal valor;
 
+    @Column
     private String descricao;
 
     @Column(nullable = false)
+    @NotNull(message = "O campo data é obrigatório")
     private LocalDate data;
 
     public Receita() {

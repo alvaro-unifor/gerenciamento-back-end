@@ -36,7 +36,8 @@ public class ReceitaService {
     }
 
     public MessageOutput deletarReceita(Long id){
-        repository.deleteAllById(Collections.singleton(id));
+        Receita receita = buscarReceitaPorId(id);
+        repository.delete(receita);
         return new MessageOutput("Receita deletada com sucesso");
     }
 

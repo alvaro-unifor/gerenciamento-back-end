@@ -16,12 +16,6 @@ public class CategoriaOutput {
         this.tipo = categoria.getTipo();
     }
 
-    public CategoriaOutput(Optional<Categoria> categoria) {
-        this.id = categoria.get().getId();
-        this.nome = categoria.get().getNome();
-        this.tipo = categoria.get().getTipo();
-    }
-
     public Long getId() {
         return id;
     }
