@@ -4,18 +4,22 @@ import com.gerenciamento.Gerenciamento.Models.Despesa;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class DespesaOutput {
     private Long id;
     private String descricaoCategoria;
     private BigDecimal valor;
     private String descricao;
+    private LocalDate data;
 
     public DespesaOutput(Despesa despesa) {
         this.id = despesa.getId();
         this.descricaoCategoria = despesa.getCategoria().getNome();
         this.valor = despesa.getValor();
         this.descricao = despesa.getDescricao();
+        this.data = despesa.getData();
+
     }
 
     public Long getId() {
@@ -48,5 +52,12 @@ public class DespesaOutput {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

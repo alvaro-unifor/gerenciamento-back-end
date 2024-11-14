@@ -9,8 +9,11 @@ import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.DespesaRepository;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,7 @@ public class DespesaService {
     @Autowired
     DespesaRepository repository;
 
-    public DespesaOutput cadastrarReceita(Despesa input) {
+    public DespesaOutput cadastrarDespesa(Despesa input) {
         return new DespesaOutput(repository.save(input));
     }
 
@@ -33,14 +36,52 @@ public class DespesaService {
         return new DespesaOutput(repository.save(despesa));
     }
 
-    public MessageOutput deletarReceita(Long id){
+    public MessageOutput deletarDespesa(Long id){
         Despesa despesa = buscarReceitaPorId(id);
         repository.delete(despesa);
         return new MessageOutput("Despesa deletada com sucesso");
     }
 
-    public List<DespesaOutput> listarReceitas() {
+    public List<DespesaOutput> listarDespesas() {
         List<Despesa> despesas = repository.findAll();
+        List<DespesaOutput> lista = new ArrayList<>();
+        for (Despesa despesa: despesas) {
+            lista.add(new DespesaOutput(despesa));
+        }
+        return lista;
+    }
+
+    public List<DespesaOutput> listarDespesasPorMes(int ano, int mes) {
+        LocalDate dataInicial = YearMonth.of(ano, mes).atDay(1);
+        LocalDate dataFInal = YearMonth.of(ano, mes).atEndOfMonth();
+        List<Despesa> despesas = repository.findByDataBetween(dataInicial, dataFInal);
+        List<DespesaOutput> lista = new ArrayList<>();
+        for (Despesa despesa: despesas) {
+            lista.add(new DespesaOutput(despesa));
+        }
+        return lista;
+    }
+
+    public List<DespesaOutput> listarDespesasPorPeriodo(LocalDate dataInicial, LocalDate dataFInal) {
+        List<Despesa> despesas = repository.findByDataBetween(dataInicial, dataFInal);
+        List<DespesaOutput> lista = new ArrayList<>();
+        for (Despesa despesa: despesas) {
+            lista.add(new DespesaOutput(despesa));
+        }
+        return lista;
+    }
+
+    public List<DespesaOutput> listarMaioresDespesas(int limite) {
+        List<Despesa> despesas = repository.findByOrderByValorDesc(PageRequest.of(0, limite));
+        List<DespesaOutput> lista = new ArrayList<>();
+        for (Despesa despesa: despesas) {
+            lista.add(new DespesaOutput(despesa));
+        }
+        return lista;
+    }
+
+    public List<DespesaOutput> listarMenoresDespesas(int limite) {
+        List<Despesa> despesas = repository.findByOrderByValorAsc(PageRequest.of(0, limite));
         List<DespesaOutput> lista = new ArrayList<>();
         for (Despesa despesa: despesas) {
             lista.add(new DespesaOutput(despesa));

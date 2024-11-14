@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,7 @@ public class ReceitaController {
 
         Receita receita = new Receita(request, usuario, categoria);
 
-        ReceitaOutput response = receitaService.cadastrarReceita(receita);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(receitaService.cadastrarReceita(receita));
     }
 
     @PutMapping("/atualizar-receita/{id}")
@@ -47,19 +47,36 @@ public class ReceitaController {
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
         Receita receita = new Receita(request, categoria);
 
-        ReceitaOutput response = receitaService.atualizarReceita(receita, id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(receitaService.atualizarReceita(receita, id));
     }
 
     @GetMapping("/listar-receitas")
     public ResponseEntity<List<ReceitaOutput>> listarReceitas() {
-        List<ReceitaOutput> response = receitaService.listarReceitas();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(receitaService.listarReceitas());
     }
 
     @DeleteMapping("/deletar-receita/{id}")
     public ResponseEntity<MessageOutput> deletarReceitaPorId(@PathVariable Long id) {
-        MessageOutput response = receitaService.deletarReceita(id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(receitaService.deletarReceita(id));
+    }
+
+    @GetMapping("/receitas/mes/{ano}/{mes}")
+    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorMes(@PathVariable int ano, @PathVariable int mes) {
+        return ResponseEntity.ok(receitaService.listarReceitasPorMes(ano, mes));
+    }
+
+    @GetMapping("/receitas/periodo")
+    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorPeriodo(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        return ResponseEntity.ok(receitaService.listarReceitasPorPeriodo(dataInicio, dataFim));
+    }
+
+    @GetMapping("/receitas/maiores")
+    public ResponseEntity<List<ReceitaOutput>> listarMaioresReceitas(@RequestParam int limite) {
+        return ResponseEntity.ok(receitaService.listarMaioresReceitas(limite));
+    }
+
+    @GetMapping("/receitas/menores")
+    public ResponseEntity<List<ReceitaOutput>> listarMenoresReceitas(@RequestParam int limite) {
+        return ResponseEntity.ok(receitaService.listarMenoresReceitas(limite));
     }
 }
