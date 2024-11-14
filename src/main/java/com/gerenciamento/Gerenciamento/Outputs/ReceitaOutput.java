@@ -6,13 +6,15 @@ import java.math.BigDecimal;
 
 public class ReceitaOutput {
     private Long id;
-    private String descricao;
+    private String descricaoCategoria;
     private BigDecimal valor;
+    private String descricao;
 
     public ReceitaOutput(Receita receita) {
         this.id = receita.getId();
-        this.descricao = receita.getCategoria().getNome();
+        this.descricaoCategoria = receita.getCategoria().getNome();
         this.valor = receita.getValor();
+        this.descricao = receita.getDescricao();
     }
 
     public Long getId() {
@@ -23,12 +25,12 @@ public class ReceitaOutput {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescricaoCategoria() {
+        return descricaoCategoria;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescricaoCategoria(String descricaoCategoria) {
+        this.descricaoCategoria = descricaoCategoria;
     }
 
     public BigDecimal getValor() {
@@ -37,5 +39,13 @@ public class ReceitaOutput {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

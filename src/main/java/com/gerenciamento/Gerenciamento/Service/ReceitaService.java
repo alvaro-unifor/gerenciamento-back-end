@@ -1,6 +1,7 @@
 package com.gerenciamento.Gerenciamento.Service;
 
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
+import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
@@ -51,6 +52,6 @@ public class ReceitaService {
 
     public Receita buscarReceitaPorId(Long id) {
         return repository.findById(id).
-                orElseThrow(() -> new RuntimeException("Receita não encontrada"));
+                orElseThrow(() -> new EntidadeNaoEncontradaException("Receita não encontrada"));
     }
 }

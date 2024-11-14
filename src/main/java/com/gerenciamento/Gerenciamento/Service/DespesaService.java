@@ -1,5 +1,6 @@
 package com.gerenciamento.Gerenciamento.Service;
 
+import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
 import com.gerenciamento.Gerenciamento.Models.Despesa;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
@@ -35,7 +36,7 @@ public class DespesaService {
     public MessageOutput deletarReceita(Long id){
         Despesa despesa = buscarReceitaPorId(id);
         repository.delete(despesa);
-        return new MessageOutput("Receita deletada com sucesso");
+        return new MessageOutput("Despesa deletada com sucesso");
     }
 
     public List<DespesaOutput> listarReceitas() {
@@ -49,6 +50,6 @@ public class DespesaService {
 
     public Despesa buscarReceitaPorId(Long id) {
         return repository.findById(id).
-                orElseThrow(() -> new RuntimeException("Receita não encontrada"));
+                orElseThrow(() -> new EntidadeNaoEncontradaException("Despesa não encontrada"));
     }
 }

@@ -1,6 +1,7 @@
 package com.gerenciamento.Gerenciamento.Service;
 
 import com.gerenciamento.Gerenciamento.Dto.CategoriaDTO;
+import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
@@ -52,6 +53,6 @@ public class CategoriaService {
 
     public Categoria buscarCategoriaPorId(Long id) {
         return repository.findById(id).
-                orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+                orElseThrow(() -> new EntidadeNaoEncontradaException("Categoria não encontrada"));
     }
 }

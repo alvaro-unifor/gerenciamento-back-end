@@ -1,11 +1,13 @@
 package com.gerenciamento.Gerenciamento.Controller;
 
 import com.gerenciamento.Gerenciamento.Dto.AutheticationDTO;
+import com.gerenciamento.Gerenciamento.Outputs.LoginOutput;
 import com.gerenciamento.Gerenciamento.Dto.RegistroDTO;
+import com.gerenciamento.Gerenciamento.Infra.TokenService;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
+import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Repository.UsuarioRepository;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,18 +25,23 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    UsuarioRepository repository;
+    private UsuarioRepository repository;
+
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AutheticationDTO request) {
+    public ResponseEntity<LoginOutput> login(@RequestBody @Valid AutheticationDTO request) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(request.getLogin(), request.getSenha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginOutput(token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity registrar(@RequestBody @Valid RegistroDTO request) {
+    public ResponseEntity<MessageOutput> registrar(@RequestBody @Valid RegistroDTO request) {
         if(this.repository.findByLogin(request.getLogin()) != null) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,6 +50,6 @@ public class AuthenticationController {
 
         this.repository.save(usuario);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageOutput("Usuário criado com sucesso"));
     }
 }

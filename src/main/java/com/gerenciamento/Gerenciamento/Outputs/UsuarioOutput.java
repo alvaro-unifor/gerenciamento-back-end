@@ -6,12 +6,12 @@ import java.util.Optional;
 
 public class UsuarioOutput {
     private Long id;
-    private String nome;
-    private String email;
+    private String login;
     private String senha;
 
     public UsuarioOutput(Usuario usuario) {
         this.id = usuario.getId();
+        this.login = usuario.getLogin();
         this.senha = usuario.getSenha();
     }
 
@@ -23,12 +23,12 @@ public class UsuarioOutput {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getLogin() {
+        return login;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {
@@ -39,11 +39,4 @@ public class UsuarioOutput {
         this.senha = senha;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

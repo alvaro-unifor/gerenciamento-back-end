@@ -26,13 +26,17 @@ public class ReceitaController {
     @Autowired
     private ReceitaService receitaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     @PostMapping("/criar-receita")
     public ResponseEntity<ReceitaOutput> criarReceita(@Valid @RequestBody ReceitaDTO request) {
 
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
+        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
 
-        Receita receita = new Receita(request, categoria);
+        Receita receita = new Receita(request, usuario, categoria);
 
         ReceitaOutput response = receitaService.cadastrarReceita(receita);
         return ResponseEntity.ok(response);

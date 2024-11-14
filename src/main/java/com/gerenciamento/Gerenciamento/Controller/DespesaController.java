@@ -27,6 +27,9 @@ public class DespesaController {
     private CategoriaService categoriaService;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private DespesaService despesaService;
 
 
@@ -34,8 +37,10 @@ public class DespesaController {
     public ResponseEntity<DespesaOutput> criarDespesa(@RequestBody DespesaDTO request) {
 
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
+        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getCategoria());
 
-        Despesa despesa = new Despesa(request, categoria);
+
+        Despesa despesa = new Despesa(request, usuario, categoria);
 
         DespesaOutput response = despesaService.cadastrarReceita(despesa);
         return ResponseEntity.ok(response);
