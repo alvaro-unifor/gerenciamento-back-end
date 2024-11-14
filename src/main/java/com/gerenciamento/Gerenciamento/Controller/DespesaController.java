@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @RestController
 public class DespesaController {
@@ -42,7 +43,7 @@ public class DespesaController {
 
         Despesa despesa = new Despesa(request, usuario, categoria);
 
-        DespesaOutput response = despesaService.cadastrarReceita(despesa);
+        DespesaOutput response = despesaService.cadastrarDespesa(despesa);
         return ResponseEntity.ok(response);
     }
 
@@ -56,14 +57,34 @@ public class DespesaController {
     }
 
     @GetMapping("/listar-despesas")
-    public ResponseEntity<List<DespesaOutput>> listarReceitas() {
-        List<DespesaOutput> response = despesaService.listarReceitas();
+    public ResponseEntity<List<DespesaOutput>> listarDespesas() {
+        List<DespesaOutput> response = despesaService.listarDespesas();
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/deletar-despesa/{id}")
-    public ResponseEntity<MessageOutput> deletarReceitaPorId(@PathVariable Long id) {
-        MessageOutput response = despesaService.deletarReceita(id);
+    public ResponseEntity<MessageOutput> deletarDespesaPorId(@PathVariable Long id) {
+        MessageOutput response = despesaService.deletarDespesa(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/despesas/mes/{ano}/{mes}")
+    public ResponseEntity<List<DespesaOutput>> listarDespesaPorMes(@PathVariable int ano, @PathVariable int mes) {
+        return ResponseEntity.ok(despesaService.listarDespesasPorMes(ano, mes));
+    }
+
+    @GetMapping("/despesas/periodo")
+    public ResponseEntity<List<DespesaOutput>> listarDespesaPorPeriodo(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        return ResponseEntity.ok(despesaService.listarDespesasPorPeriodo(dataInicio, dataFim));
+    }
+
+    @GetMapping("/despesas/maiores")
+    public ResponseEntity<List<DespesaOutput>> listarMaioresDespesa(@RequestParam int limite) {
+        return ResponseEntity.ok(despesaService.listarMaioresDespesas(limite));
+    }
+
+    @GetMapping("/despesas/menores")
+    public ResponseEntity<List<DespesaOutput>> listarMenoresDespesa(@RequestParam int limite) {
+        return ResponseEntity.ok(despesaService.listarMenoresDespesas(limite));
     }
 }
