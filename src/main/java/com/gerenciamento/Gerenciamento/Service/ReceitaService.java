@@ -1,11 +1,13 @@
 package com.gerenciamento.Gerenciamento.Service;
 
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
+import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +16,9 @@ import java.util.List;
 
 @Service
 public class ReceitaService {
-    ReceitaRepository repository;
 
-    public ReceitaService(ReceitaRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    ReceitaRepository repository;
 
     public ReceitaOutput cadastrarReceita(Receita input) {
         return new ReceitaOutput(repository.save(input));
@@ -52,6 +52,6 @@ public class ReceitaService {
 
     public Receita buscarReceitaPorId(Long id) {
         return repository.findById(id).
-                orElseThrow(() -> new RuntimeException("Receita não encontrada"));
+                orElseThrow(() -> new EntidadeNaoEncontradaException("Receita não encontrada"));
     }
 }

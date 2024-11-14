@@ -21,20 +21,20 @@ import java.util.Optional;
 public class ReceitaController {
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
     private CategoriaService categoriaService;
 
     @Autowired
     private ReceitaService receitaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     @PostMapping("/criar-receita")
     public ResponseEntity<ReceitaOutput> criarReceita(@Valid @RequestBody ReceitaDTO request) {
 
-        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
+        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
 
         Receita receita = new Receita(request, usuario, categoria);
 

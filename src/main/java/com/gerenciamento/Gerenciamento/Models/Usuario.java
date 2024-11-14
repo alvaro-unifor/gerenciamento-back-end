@@ -1,28 +1,30 @@
 package com.gerenciamento.Gerenciamento.Models;
 
 import com.gerenciamento.Gerenciamento.Dto.UsuarioDTO;
+import com.gerenciamento.Gerenciamento.Enum.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String nome;
+    @Column(nullable = false)
+    private String login;
 
-    @Column
-    private String userName;
-
-    @Column
-    private String email;
-
-    @Column
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
+    private UserRole role;
 
     @OneToMany(mappedBy = "usuario")
     private List<Receita> receitas;
@@ -34,10 +36,14 @@ public class Usuario {
     }
 
     public Usuario(UsuarioDTO dto) {
-        this.nome = dto.getNome();
-        this.userName = dto.getUserName();
-        this.email = dto.getEmail();
+        this.login = dto.getNome();
         this.senha = dto.getSenha();
+    }
+
+    public Usuario(String login, String senha, UserRole role) {
+        this.login = login;
+        this.senha = senha;
+        this.role = role;
     }
 
     public Long getId() {
@@ -48,28 +54,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getLogin() {
+        return login;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {
@@ -78,6 +68,14 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public List<Receita> getReceitas() {
@@ -94,5 +92,41 @@ public class Usuario {
 
     public void setExpenses(List<Despesa> despesas) {
         this.despesas = despesas;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
