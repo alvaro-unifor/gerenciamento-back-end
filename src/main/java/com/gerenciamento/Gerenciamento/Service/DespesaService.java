@@ -89,6 +89,15 @@ public class DespesaService {
         return lista;
     }
 
+    public List<DespesaOutput> listarDespesasPorUsuario(Long usuarioId) {
+        List<Despesa> despesas = repository.findByUsuarioId(usuarioId);
+        List<DespesaOutput> lista = new ArrayList<>();
+        for (Despesa despesa : despesas) {
+            lista.add(new DespesaOutput(despesa));
+        }
+        return lista;
+    }
+
     public Despesa buscarReceitaPorId(Long id) {
         return repository.findById(id).
                 orElseThrow(() -> new EntidadeNaoEncontradaException("Despesa não encontrada"));

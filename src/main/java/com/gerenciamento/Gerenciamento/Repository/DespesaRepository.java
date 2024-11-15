@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
+    List<Despesa> findByUsuarioId(Long usuarioId);
+
     List<Despesa> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
 
     List<Despesa> findByOrderByValorDesc(Pageable pageable);

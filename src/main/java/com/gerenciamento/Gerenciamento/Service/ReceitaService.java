@@ -3,7 +3,9 @@ package com.gerenciamento.Gerenciamento.Service;
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
+import com.gerenciamento.Gerenciamento.Models.Despesa;
 import com.gerenciamento.Gerenciamento.Models.Receita;
+import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
@@ -87,6 +89,15 @@ public class ReceitaService {
         List<Receita> receitas = repository.findByOrderByValorAsc(PageRequest.of(0, limite));
         List<ReceitaOutput> lista = new ArrayList<>();
         for (Receita receita: receitas) {
+            lista.add(new ReceitaOutput(receita));
+        }
+        return lista;
+    }
+
+    public List<ReceitaOutput> listarReceitasPorUsuario(Long usuarioId) {
+        List<Receita> receitas = repository.findByUsuarioId(usuarioId);
+        List<ReceitaOutput> lista = new ArrayList<>();
+        for (Receita receita : receitas) {
             lista.add(new ReceitaOutput(receita));
         }
         return lista;

@@ -4,6 +4,7 @@ import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
+import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Service.CategoriaService;
@@ -51,8 +52,10 @@ public class ReceitaController {
     }
 
     @GetMapping("/listar-receitas")
-    public ResponseEntity<List<ReceitaOutput>> listarReceitas() {
-        return ResponseEntity.ok(receitaService.listarReceitas());
+    public ResponseEntity<List<ReceitaOutput>> listarReceitas(@RequestParam Long usuarioId) {
+        List<ReceitaOutput> response = receitaService.listarReceitasPorUsuario(usuarioId);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/deletar-receita/{id}")

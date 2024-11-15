@@ -38,8 +38,7 @@ public class DespesaController {
     public ResponseEntity<DespesaOutput> criarDespesa(@RequestBody DespesaDTO request) {
 
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
-        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getCategoria());
-
+        Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
 
         Despesa despesa = new Despesa(request, usuario, categoria);
 
@@ -57,8 +56,8 @@ public class DespesaController {
     }
 
     @GetMapping("/listar-despesas")
-    public ResponseEntity<List<DespesaOutput>> listarDespesas() {
-        List<DespesaOutput> response = despesaService.listarDespesas();
+    public ResponseEntity<List<DespesaOutput>> listarDespesas(@RequestParam Long usuarioId) {
+        List<DespesaOutput> response = despesaService.listarDespesasPorUsuario(usuarioId);
         return ResponseEntity.ok(response);
     }
 
