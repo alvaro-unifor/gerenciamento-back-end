@@ -51,10 +51,10 @@ public class DespesaService {
         return lista;
     }
 
-    public List<DespesaOutput> listarDespesasPorMes(int ano, int mes) {
+    public List<DespesaOutput> listarDespesasPorMes(int ano, int mes, Long usuarioId) {
         LocalDate dataInicial = YearMonth.of(ano, mes).atDay(1);
         LocalDate dataFInal = YearMonth.of(ano, mes).atEndOfMonth();
-        List<Despesa> despesas = repository.findByDataBetween(dataInicial, dataFInal);
+        List<Despesa> despesas = repository.findByUsuarioIdAndDataBetween(usuarioId, dataInicial, dataFInal);
         List<DespesaOutput> lista = new ArrayList<>();
         for (Despesa despesa: despesas) {
             lista.add(new DespesaOutput(despesa));
@@ -62,8 +62,8 @@ public class DespesaService {
         return lista;
     }
 
-    public List<DespesaOutput> listarDespesasPorPeriodo(LocalDate dataInicial, LocalDate dataFInal) {
-        List<Despesa> despesas = repository.findByDataBetween(dataInicial, dataFInal);
+    public List<DespesaOutput> listarDespesasPorPeriodo(LocalDate dataInicial, LocalDate dataFInal, Long usuarioId) {
+        List<Despesa> despesas = repository.findByUsuarioIdAndDataBetween(usuarioId, dataInicial, dataFInal);
         List<DespesaOutput> lista = new ArrayList<>();
         for (Despesa despesa: despesas) {
             lista.add(new DespesaOutput(despesa));
@@ -71,8 +71,8 @@ public class DespesaService {
         return lista;
     }
 
-    public List<DespesaOutput> listarMaioresDespesas(int limite) {
-        List<Despesa> despesas = repository.findByOrderByValorDesc(PageRequest.of(0, limite));
+    public List<DespesaOutput> listarMaioresDespesas(int limite, Long usuarioId) {
+        List<Despesa> despesas = repository.findByUsuarioIdOrderByValorDesc(usuarioId, PageRequest.of(0, limite));
         List<DespesaOutput> lista = new ArrayList<>();
         for (Despesa despesa: despesas) {
             lista.add(new DespesaOutput(despesa));
@@ -80,8 +80,8 @@ public class DespesaService {
         return lista;
     }
 
-    public List<DespesaOutput> listarMenoresDespesas(int limite) {
-        List<Despesa> despesas = repository.findByOrderByValorAsc(PageRequest.of(0, limite));
+    public List<DespesaOutput> listarMenoresDespesas(int limite, Long usuarioId) {
+        List<Despesa> despesas = repository.findByUsuarioIdOrderByValorAsc(usuarioId, PageRequest.of(0, limite));
         List<DespesaOutput> lista = new ArrayList<>();
         for (Despesa despesa: despesas) {
             lista.add(new DespesaOutput(despesa));
