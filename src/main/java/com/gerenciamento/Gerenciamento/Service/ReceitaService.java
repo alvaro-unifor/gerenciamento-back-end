@@ -2,10 +2,7 @@ package com.gerenciamento.Gerenciamento.Service;
 
 import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import com.gerenciamento.Gerenciamento.Exception.EntidadeNaoEncontradaException;
-import com.gerenciamento.Gerenciamento.Models.Categoria;
-import com.gerenciamento.Gerenciamento.Models.Despesa;
 import com.gerenciamento.Gerenciamento.Models.Receita;
-import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Repository.ReceitaRepository;
@@ -16,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReceitaService {
@@ -56,10 +51,10 @@ public class ReceitaService {
         return lista;
     }
 
-    public List<ReceitaOutput> listarReceitasPorMes(int ano, int mes) {
+    public List<ReceitaOutput> listarReceitasPorMes(int ano, int mes, Long usuarioId) {
         LocalDate dataInicial = YearMonth.of(ano, mes).atDay(1);
-        LocalDate dataFInal = YearMonth.of(ano, mes).atEndOfMonth();
-        List<Receita> receitas = repository.findByDataBetween(dataInicial, dataFInal);
+        LocalDate dataFinal = YearMonth.of(ano, mes).atEndOfMonth();
+        List<Receita> receitas = repository.findByUsuarioIdAndDataBetween(usuarioId, dataInicial, dataFinal);
         List<ReceitaOutput> lista = new ArrayList<>();
         for (Receita receita: receitas) {
             lista.add(new ReceitaOutput(receita));
@@ -67,8 +62,8 @@ public class ReceitaService {
         return lista;
     }
 
-    public List<ReceitaOutput> listarReceitasPorPeriodo(LocalDate dataInicial, LocalDate dataFInal) {
-        List<Receita> receitas = repository.findByDataBetween(dataInicial, dataFInal);
+    public List<ReceitaOutput> listarReceitasPorPeriodo(LocalDate dataInicial, LocalDate dataFinal, Long usuarioId) {
+        List<Receita> receitas = repository.findByUsuarioIdAndDataBetween(usuarioId, dataInicial, dataFinal);
         List<ReceitaOutput> lista = new ArrayList<>();
         for (Receita receita: receitas) {
             lista.add(new ReceitaOutput(receita));
@@ -76,8 +71,8 @@ public class ReceitaService {
         return lista;
     }
 
-    public List<ReceitaOutput> listarMaioresReceitas(int limite) {
-        List<Receita> receitas = repository.findByOrderByValorDesc(PageRequest.of(0, limite));
+    public List<ReceitaOutput> listarMaioresReceitas(int limite, Long usuarioId) {
+        List<Receita> receitas = repository.findByUsuarioIdOrderByValorDesc(usuarioId, PageRequest.of(0, limite));
         List<ReceitaOutput> lista = new ArrayList<>();
         for (Receita receita: receitas) {
             lista.add(new ReceitaOutput(receita));
@@ -85,8 +80,8 @@ public class ReceitaService {
         return lista;
     }
 
-    public List<ReceitaOutput> listarMenoresReceitas(int limite) {
-        List<Receita> receitas = repository.findByOrderByValorAsc(PageRequest.of(0, limite));
+    public List<ReceitaOutput> listarMenoresReceitas(int limite, Long usuarioId) {
+        List<Receita> receitas = repository.findByUsuarioIdOrderByValorAsc(usuarioId, PageRequest.of(0, limite));
         List<ReceitaOutput> lista = new ArrayList<>();
         for (Receita receita: receitas) {
             lista.add(new ReceitaOutput(receita));

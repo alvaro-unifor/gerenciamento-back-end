@@ -4,7 +4,6 @@ import com.gerenciamento.Gerenciamento.Dto.ReceitaDTO;
 import com.gerenciamento.Gerenciamento.Models.Categoria;
 import com.gerenciamento.Gerenciamento.Models.Receita;
 import com.gerenciamento.Gerenciamento.Models.Usuario;
-import com.gerenciamento.Gerenciamento.Outputs.DespesaOutput;
 import com.gerenciamento.Gerenciamento.Outputs.MessageOutput;
 import com.gerenciamento.Gerenciamento.Outputs.ReceitaOutput;
 import com.gerenciamento.Gerenciamento.Service.CategoriaService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ReceitaController {
@@ -31,15 +29,11 @@ public class ReceitaController {
     @Autowired
     private UsuarioService usuarioService;
 
-
     @PostMapping("/criar-receita")
     public ResponseEntity<ReceitaOutput> criarReceita(@Valid @RequestBody ReceitaDTO request) {
-
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
         Usuario usuario = usuarioService.buscarUsuarioPorId(request.getUsuario());
-
         Receita receita = new Receita(request, usuario, categoria);
-
         return ResponseEntity.ok(receitaService.cadastrarReceita(receita));
     }
 
@@ -47,14 +41,12 @@ public class ReceitaController {
     public ResponseEntity<ReceitaOutput> atualizarReceitaPorId(@PathVariable Long id, @Valid @RequestBody ReceitaDTO request) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(request.getCategoria());
         Receita receita = new Receita(request, categoria);
-
         return ResponseEntity.ok(receitaService.atualizarReceita(receita, id));
     }
 
-    @GetMapping("/listar-receitas")
-    public ResponseEntity<List<ReceitaOutput>> listarReceitas(@RequestParam Long usuarioId) {
+    @GetMapping("/listar-receitas/{usuarioId}")
+    public ResponseEntity<List<ReceitaOutput>> listarReceitas(@PathVariable Long usuarioId) {
         List<ReceitaOutput> response = receitaService.listarReceitasPorUsuario(usuarioId);
-
         return ResponseEntity.ok(response);
     }
 
@@ -63,23 +55,23 @@ public class ReceitaController {
         return ResponseEntity.ok(receitaService.deletarReceita(id));
     }
 
-    @GetMapping("/receitas/mes/{ano}/{mes}")
-    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorMes(@PathVariable int ano, @PathVariable int mes) {
-        return ResponseEntity.ok(receitaService.listarReceitasPorMes(ano, mes));
+    @GetMapping("/receitas/{usuarioId}/mes/{ano}/{mes}")
+    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorMes(@PathVariable Long usuarioId, @PathVariable int ano, @PathVariable int mes) {
+        return ResponseEntity.ok(receitaService.listarReceitasPorMes(ano, mes, usuarioId));
     }
 
-    @GetMapping("/receitas/periodo")
-    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorPeriodo(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
-        return ResponseEntity.ok(receitaService.listarReceitasPorPeriodo(dataInicio, dataFim));
+    @GetMapping("/receitas/{usuarioId}/periodo")
+    public ResponseEntity<List<ReceitaOutput>> listarReceitasPorPeriodo(@PathVariable Long usuarioId, @RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        return ResponseEntity.ok(receitaService.listarReceitasPorPeriodo(dataInicio, dataFim, usuarioId));
     }
 
-    @GetMapping("/receitas/maiores")
-    public ResponseEntity<List<ReceitaOutput>> listarMaioresReceitas(@RequestParam int limite) {
-        return ResponseEntity.ok(receitaService.listarMaioresReceitas(limite));
+    @GetMapping("/receitas/{usuarioId}/maiores")
+    public ResponseEntity<List<ReceitaOutput>> listarMaioresReceitas(@PathVariable Long usuarioId, @RequestParam int limite) {
+        return ResponseEntity.ok(receitaService.listarMaioresReceitas(limite, usuarioId));
     }
 
-    @GetMapping("/receitas/menores")
-    public ResponseEntity<List<ReceitaOutput>> listarMenoresReceitas(@RequestParam int limite) {
-        return ResponseEntity.ok(receitaService.listarMenoresReceitas(limite));
+    @GetMapping("/receitas/{usuarioId}/menores")
+    public ResponseEntity<List<ReceitaOutput>> listarMenoresReceitas(@PathVariable Long usuarioId, @RequestParam int limite) {
+        return ResponseEntity.ok(receitaService.listarMenoresReceitas(limite, usuarioId));
     }
 }

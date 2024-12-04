@@ -1,7 +1,6 @@
 package com.gerenciamento.Gerenciamento.Repository;
 
 import com.gerenciamento.Gerenciamento.Models.Despesa;
-import com.gerenciamento.Gerenciamento.Models.Receita;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,9 +11,9 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
     List<Despesa> findByUsuarioId(Long usuarioId);
 
-    List<Despesa> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
+    List<Despesa> findByUsuarioIdAndDataBetween(Long usuarioId, LocalDate dataInicio, LocalDate dataFim);
 
-    List<Despesa> findByOrderByValorDesc(Pageable pageable);
+    List<Despesa> findByUsuarioIdOrderByValorDesc(Long usuarioId, Pageable pageable);
 
-    List<Despesa> findByOrderByValorAsc(Pageable pageable);
+    List<Despesa> findByUsuarioIdOrderByValorAsc(Long usuarioId, Pageable pageable);
 }
